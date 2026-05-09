@@ -1,0 +1,47 @@
+# --- System / IDE ---
+.DS_Store
+*.swp
+.vscode/
+.idea/
+.env
+.env.local
+
+# --- Python / uv ---
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+.uv/
+.python-version
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+build/
+dist/
+*.egg-info/
+
+# --- Node / pnpm ---
+node_modules/
+frontend/dist/
+frontend/build/
+.npm
+.pnpm-debug.log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --- Database / Docker ---
+data/
+*.db
+*.sqlite
+.docker/
+# Ignore actual postgres data folder if mapped to host
+pgdata/ 
+
+# --- Audio/Temporary Assets ---
+# This ignores the temp files created during PDF/Audio processing
+backend/app/temp/*
+*.webm
+*.wav
+*.mp3
+backend/data/
