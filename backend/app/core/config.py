@@ -4,6 +4,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     PROJECT_NAME: str = "Karamazov"
     API_V1_STR: str = "/api/v1"
+    DEBUG: bool = False
 
     # Database
     DATABASE_URL: str = "postgresql://user:password@db:5432/interview_coach"

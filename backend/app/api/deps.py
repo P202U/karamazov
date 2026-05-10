@@ -1,8 +1,6 @@
 from typing import Generator
-from sqlmodel import Session, create_engine
-from app.core.config import settings
-
-engine = create_engine(settings.DATABASE_URL)
+from sqlmodel import Session
+from app.db.session import engine
 
 
 def get_db() -> Generator:
