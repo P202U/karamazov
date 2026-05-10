@@ -1,28 +1,29 @@
 services:
   db:
     image: postgres:15-alpine
-    container_name: interview_db
-    restart: always
+    container_name: karamazov_db
     environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=interview_coach
+      POSTGRES_USER: ${POSTGRES_USER:-user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-interview_db}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - '5432:5432'
 
   backend:
-    build: ./backend
-    container_name: interview_backend
+    build:
+      context: ./backend
+    container_name: karamazov_api
     volumes:
       - ./backend:/app
     environment:
-      - DATABASE_URL=postgresql://user:password@db:5432/interview_coach
-    depends_on:
-      - db
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-user}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-interview_db}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
     ports:
       - '8000:8000'
+    depends_on:
+      - db
 
 volumes:
   postgres_data:
