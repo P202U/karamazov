@@ -20,7 +20,7 @@ async def generate_next_question(
 
     try:
         response = await client.aio.models.generate_content(
-            model="gemini-1.5-flash",
+            model="gemini-2.5-flash",
             contents=chat_history,
             config={"system_instruction": instruction, "temperature": 0.7},
         )

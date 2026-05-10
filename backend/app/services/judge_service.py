@@ -18,7 +18,7 @@ async def analyze_answer(answer_text: str) -> Dict[str, Any]:
 
     try:
         response = await client.aio.models.generate_content(
-            model="gemini-2.0-flash",
+            model="gemini-2.5-flash",
             contents=user_prompt,
             config={
                 "system_instruction": SYSTEM_JUDGE_PROMPT,
