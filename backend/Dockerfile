@@ -1,29 +1,29 @@
-FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS builder
+FROM python:3.11-slim as builder
 
-# 1. Install system dependencies (FFmpeg for audio)
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+WORKDIR /build
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ffmpeg \
-    libpq-dev \
-    gcc \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+
+
+FROM python:3.11-slim
 
 WORKDIR /app
 
-# 2. Install dependencies using uv
-# Enable bytecode compilation for faster startups
-ENV UV_COMPILE_BYTECODE=1
-ENV UV_LINK_MODE=copy
+COPY --from=builder /install /usr/local
 
-# Copy only what's needed to install dependencies
-COPY pyproject.toml uv.lock ./
-RUN uv sync --frozen --no-install-project --no-dev
+COPY ./app ./app
 
-# 3. Final Stage
-COPY . .
-# Sync the rest of the project
-RUN uv sync --frozen --no-dev
+EXPOSE 8000
 
-# Path to the virtualenv created by uv
-ENV PATH="/app/.venv/bin:$PATH"
+RUN useradd -m karamazov_user
+USER karamazov_user
 
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
