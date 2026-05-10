@@ -1,7 +1,5 @@
 from sqlmodel import SQLModel
 from app.db.session import engine
-
-# Important: Import all models here so SQLModel knows they exist
 from app.models.interview import InterviewSession
 from app.models.message import Message
 

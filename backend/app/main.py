@@ -1,10 +1,22 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.v1 import uploads, interviews, feedback
 from app.core.config import settings
+from app.db.init_db import init_db
 
-app = FastAPI(title=settings.PROJECT_NAME)
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    print("Initializing Database...")
+    init_db()
+    yield
+    print("Shutting down...")
+
+
+app = FastAPI(title=settings.PROJECT_NAME, lifespan=lifespan)
+
+# Middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],
