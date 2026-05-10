@@ -1,27 +1,26 @@
-from pydantic import BaseModel, Field
-from typing import Optional, List
+from pydantic import BaseModel
+from typing import Optional, List, Dict, Any
+from datetime import datetime
 
 
-# 1. The STAR Breakdown (The specific feedback)
+# The STAR Breakdown we fixed earlier
 class STARAnalysis(BaseModel):
-    situation_detected = bool
-    task_detected = bool
+    situation_detected: bool
+    task_detected: bool
     action_detected: bool
     result_detected: bool
-    score: int = Field(..., ge=1, le=10)
+    score: int
     feedback_text: str
     suggested_improvement: str
 
 
-# 2. The Message
-class MessageBase(BaseModel):
-    role: str  # "interviewer" or "candidate"
+# What the frontend gets back during a chat
+class MessageRead(BaseModel):
+    id: int
+    role: str
     content: str
-    analysis: Optional[STARAnalysis] = None
+    analysis: Optional[Dict[str, Any]] = None
+    created_at: datetime
 
-
-# 3. The Session Start
-class InterviewSetup(BaseModel):
-    job_description: str
-    resume_text: str
-    difficulty: str = "Standard"  # e.g., "Standard", "Stress Test"
+    class Config:
+        from_attributes = True
