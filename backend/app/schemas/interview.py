@@ -29,3 +29,7 @@ class InterviewReport(BaseModel):
     star_completion_rate: Dict[str, str]
     overall_feedback: List[Optional[str]]
     total_exchanges: int
+
+
+class NextQuestionRequest(BaseModel):
+    user_message: str

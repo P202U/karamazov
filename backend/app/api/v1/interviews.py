@@ -4,16 +4,17 @@ from app.api import deps
 from app.models.interview import InterviewSession
 from app.models.message import Message
 from app.services import coach_service, judge_service
-from app.schemas.interview import NextQuestionResponse
+from app.schemas.interview import NextQuestionResponse, NextQuestionRequest
 
 router = APIRouter()
 
 
 @router.post("/{session_id}/next", response_model=NextQuestionResponse)
 async def get_next_question(
-    session_id: int, user_message: str, db: Session = Depends(deps.get_db)
+    session_id: int, body: NextQuestionRequest, db: Session = Depends(deps.get_db)
 ):
     # 1. Fetch Session Context
+    user_message = body.user_message
     session_record = db.get(InterviewSession, session_id)
     if not session_record:
         raise HTTPException(status_code=404, detail="Interview session not found")
