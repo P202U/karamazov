@@ -2,7 +2,7 @@ FROM python:3.11-slim-bookworm
 
 COPY --from=ghcr.io/astral-sh/uv:0.4.30 /uv /uvx /bin/
 
-RUN useradd -m karamazov_user          # create user first
+RUN useradd -m karamazov_user
 
 WORKDIR /app
 

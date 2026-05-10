@@ -1,4 +1,6 @@
+from pydantic import computed_field
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from pathlib import Path
 
 
 class Settings(BaseSettings):
@@ -6,13 +8,25 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
     DEBUG: bool = False
 
-    # Database
-    DATABASE_URL: str = "postgresql://user:password@db:5432/interview_coach"
+    POSTGRES_USER: str
+    POSTGRES_PASSWORD: str
+    POSTGRES_DB: str
+    POSTGRES_HOST: str = "db"
+    POSTGRES_PORT: int = 5432
 
-    # AI Keys
     GEMINI_API_KEY: str
 
-    model_config = SettingsConfigDict(env_file=".env", case_sensitive=True)
+    @computed_field
+    @property
+    def DATABASE_URL(self) -> str:
+        return (
+            f"postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}"
+            f"@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+        )
+
+    model_config = SettingsConfigDict(
+        env_file=Path(__file__).resolve().parents[4] / ".env", case_sensitive=True
+    )
 
 
 settings = Settings()
