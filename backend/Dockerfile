@@ -7,6 +7,9 @@ RUN useradd -m karamazov_user
 WORKDIR /app
 
 COPY --chown=karamazov_user pyproject.toml uv.lock ./
+
+ENV UV_PYTHON_PREFERENCE=only-system
+
 RUN uv sync --frozen --no-dev
 
 COPY --chown=karamazov_user ./app ./app
