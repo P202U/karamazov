@@ -37,7 +37,9 @@ async def get_interview_report(session_id: int, db: Session = Depends(deps.get_d
                 star_counts["A"] += 1
             if analysis.get("result_detected"):
                 star_counts["R"] += 1
-            feedback_points.append(analysis.get("feedback_text"))
+            text = analysis.get("feedback_text")
+            if text:
+                feedback_points.append(text)
 
     # 3. Compile Final Summary
     num_answers = len(messages)

@@ -1,10 +1,7 @@
 from sqlmodel import SQLModel, Field
 from typing import Optional
-from datetime import datetime, timezone
-
-
-def get_utc_now():
-    return datetime.now(timezone.utc)
+from datetime import datetime
+from app.utils.datetime import get_utc_now
 
 
 class InterviewSession(SQLModel, table=True):

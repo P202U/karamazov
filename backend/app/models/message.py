@@ -1,11 +1,8 @@
-from datetime import datetime, timezone
+from datetime import datetime
 from sqlmodel import SQLModel, Field, Column
 from sqlalchemy.dialects.postgresql import JSONB
 from typing import Optional, Dict
-
-
-def get_utc_now():
-    return datetime.now(timezone.utc)
+from app.utils.datetime import get_utc_now
 
 
 class Message(SQLModel, table=True):

@@ -1,12 +1,16 @@
 from google import genai
 from app.core.config import settings
 from app.core.prompts import SYSTEM_INTERVIEWER_PROMPT
+from typing import Sequence
+from app.models.message import Message
 
 # Initialize the Client
 client = genai.Client(api_key=settings.GEMINI_API_KEY)
 
 
-async def generate_next_question(jd: str, resume: str, history: list) -> str:
+async def generate_next_question(
+    jd: str, resume: str, history: Sequence[Message]
+) -> str:
     # System Persona
     instruction = SYSTEM_INTERVIEWER_PROMPT.format(
         job_description=jd, resume_text=resume
