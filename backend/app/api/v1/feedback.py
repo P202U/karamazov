@@ -2,11 +2,12 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
 from app.api import deps
 from app.models.message import Message
+from app.schemas.interview import InterviewReport
 
 router = APIRouter()
 
 
-@router.get("/{session_id}")
+@router.get("/{session_id}", response_model=InterviewReport)
 async def get_interview_report(session_id: int, db: Session = Depends(deps.get_db)):
     # 1. Fetch all candidate messages that have an analysis
     statement = select(Message).where(

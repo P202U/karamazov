@@ -4,11 +4,12 @@ from app.api import deps
 from app.models.interview import InterviewSession
 from app.models.message import Message
 from app.services import coach_service, judge_service
+from app.schemas.interview import NextQuestionResponse
 
 router = APIRouter()
 
 
-@router.post("/{session_id}/next")
+@router.post("/{session_id}/next", response_model=NextQuestionResponse)
 async def get_next_question(
     session_id: int, user_message: str, db: Session = Depends(deps.get_db)
 ):

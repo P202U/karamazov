@@ -3,7 +3,6 @@ from typing import Optional, List, Dict, Any
 from datetime import datetime
 
 
-# The STAR Breakdown we fixed earlier
 class STARAnalysis(BaseModel):
     situation_detected: bool
     task_detected: bool
@@ -14,13 +13,19 @@ class STARAnalysis(BaseModel):
     suggested_improvement: str
 
 
-# What the frontend gets back during a chat
-class MessageRead(BaseModel):
-    id: int
-    role: str
-    content: str
-    analysis: Optional[Dict[str, Any]] = None
-    created_at: datetime
+class UploadResponse(BaseModel):
+    status: str
+    session_id: int
+    message: str
 
-    class Config:
-        from_attributes = True
+
+class NextQuestionResponse(BaseModel):
+    question: str
+    analysis: Dict
+
+
+class InterviewReport(BaseModel):
+    average_score: float
+    star_completion_rate: Dict[str, str]
+    overall_feedback: List[Optional[str]]
+    total_exchanges: int
