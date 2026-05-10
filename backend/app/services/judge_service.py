@@ -44,7 +44,7 @@ async def analyze_answer(answer_text: str) -> Dict[str, Any]:
 
     except Exception as e:
         print(f"Error in judge_service: {e}")
-        return _get_fallback_analysis(f"Error processing analysis: {str(e)}")
+        return _get_fallback_analysis("Analysis temporarily unavailable.")
 
 
 def _get_fallback_analysis(error_message: str) -> Dict[str, Any]:
