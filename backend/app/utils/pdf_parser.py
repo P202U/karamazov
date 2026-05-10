@@ -13,4 +13,4 @@ def parse_pdf(file_bytes: bytes) -> str:
 
         return "\n".join(text_parts).strip()
     except Exception as e:
-        return f"Error parsing PDF: {str(e)}"
+        raise ValueError(f"Could not parse PDF: {e}") from e
