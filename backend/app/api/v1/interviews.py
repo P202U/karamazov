@@ -31,14 +31,20 @@ async def get_next_question(
     )
     history = db.exec(statement).all()
 
-    next_question, analysis = await asyncio.gather(
-        coach_service.generate_next_question(
-            jd=session_record.jd_text,
-            resume=session_record.resume_text,
-            history=history,
-        ),
-        judge_service.analyze_answer(body.user_message),
-    )
+    try:
+        next_question, analysis = await asyncio.gather(
+            coach_service.generate_next_question(
+                jd=session_record.jd_text,
+                resume=session_record.resume_text,
+                history=history,
+            ),
+            judge_service.analyze_answer(body.user_message),
+        )
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=503, detail="AI service temporarily unavailable."
+        )
 
     ai_entry = Message(
         interview_id=session_id, role="interviewer", content=next_question
